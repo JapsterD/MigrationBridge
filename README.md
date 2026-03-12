@@ -1,28 +1,49 @@
-# ZORIA Token Migration Bridge
+# MigrationBridge
 
-Cross-chain token migration: Solana → BSC.
+A cross-chain token migration bridge for ZORIA tokens from **Solana to BNB Smart Chain (BSC)**, built on Solana and **BSC** with EVM compatibility.
 
-Users send ZORIA tokens on Solana and receive ZORIA tokens on BSC at a 4:1 rate.
+## Technology Stack
 
-## Setup
+- **Blockchain**: Solana + BNB Smart Chain (BSC)
+- **Backend**: Node.js, Express, ethers.js, @solana/web3.js
+- **Frontend**: Vanilla JS, Solana wallet adapter
+- **Database**: SQLite (migrations.db)
 
-### 1. Install dependencies
+## Supported Networks
+
+- **Solana Mainnet** — Source chain for ZORIA tokens
+- **BNB Smart Chain Mainnet** (Chain ID: 56) — Destination chain for ZORIA tokens
+
+## Contract Addresses
+
+| Network | Token Contract |
+|---------|----------------|
+| Solana Mainnet | `9ivAqqyrQiSTa3sgV7K8jLeVNVU64StEBzuuR6Fgpump` (SPL Token Mint) |
+| BNB Mainnet | `0x0B71296D09B5aa459c6c79A425e41Aa9179D7777` ($ZORIA ERC-20) |
+
+## Features
+
+- **Cross-chain migration** — Solana → BSC at 4:1 rate (4 Solana tokens = 1 BSC token)
+- **On-chain verification** — Validates Solana transfer before sending BSC tokens
+- **Relayer architecture** — Backend verifies TX and distributes BSC tokens
+- **Low-cost on BSC** — Gas-efficient ERC-20 transfers on BNB Smart Chain
+- **REST API** — Config, migrate, status, recent migrations
+
+## Quick Start
+
+### 1. Install
 
 ```bash
-cd migration
 npm install
 ```
 
-### 2. Configure environment
+### 2. Configure
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` and fill in:
-
-- `SOLANA_VAULT_ADDRESS` — your Solana wallet public key (where users send tokens)
-- `BSC_PRIVATE_KEY` — private key of your BSC wallet (holds tokens to distribute)
+Edit `.env`: set `SOLANA_VAULT_ADDRESS` (receives Solana tokens) and `BSC_PRIVATE_KEY` (BSC wallet that holds tokens to distribute).
 
 ### 3. Run
 
@@ -30,7 +51,7 @@ Edit `.env` and fill in:
 npm start
 ```
 
-The server runs on `http://localhost:3000`.
+Server runs on `http://localhost:3000`.
 
 ## Architecture
 
@@ -57,9 +78,8 @@ curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # Clone and setup
-cd /var/www
-git clone <your-repo> migration
-cd migration
+git clone https://github.com/JapsterD/MigrationBridge.git
+cd MigrationBridge
 npm install
 cp .env.example .env
 nano .env  # fill in keys
